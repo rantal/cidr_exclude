@@ -29,10 +29,10 @@ for arg in sys.argv:
 
 for line in read_stdin():
     line = line.split()
-    found = 0
+    cidrs = IPSet(IPNetwork(line[0]))
     for excludeip in excludeips:
-        if (excludeip != '' and line[0] != ''):
-            if IPAddress(excludeip) in IPNetwork(line[0]):
-                found = 1
-    if (found == 0):
-        print(line[0])
+        if (excludeip != ''):
+            cidrs.remove(IPNetwork(excludeip))
+    for cidr1 in cidrs.iter_cidrs():
+        print(IPNetwork(cidr1))
+
